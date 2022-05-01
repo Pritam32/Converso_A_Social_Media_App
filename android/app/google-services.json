@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "269462931564",
+    "project_id": "converso-84513",
+    "storage_bucket": "converso-84513.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269462931564:android:dd6f386f1868eb317cb049",
+        "android_client_info": {
+          "package_name": "com.converso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269462931564-tvl8lj04jif59uan5ehc7i4cqqtf10v5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT8eqbwCd6ap_e5i_1wDzLzuU9Fu0-IFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269462931564-tvl8lj04jif59uan5ehc7i4cqqtf10v5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
