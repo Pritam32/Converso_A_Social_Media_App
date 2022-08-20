@@ -1,9 +1,11 @@
 import React,{useState} from 'react';
-import {Text,View,ImageBackground,ScrollView,Dimensions, TouchableOpacity,Image} from 'react-native';
+import {Text,View,ImageBackground,ScrollView,Dimensions, TouchableOpacity,Image, Alert} from 'react-native';
 import { TextInput,Button} from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
 import RegisterScreen from './RegisterScreen';
 import auth from '@react-native-firebase/auth';
+import ChatScreen from './ChatScreen';
+import { useRoute } from '@react-navigation/native';
 
 
 const LoginScreen=({navigation})=>{
@@ -14,6 +16,8 @@ const LoginScreen=({navigation})=>{
   const [email,setEmail]=useState();
   const [password,setPassword]=useState();
   const[phone,setPhone]=useState();
+
+  const route= useRoute();
 
   const LoginUser=()=>{
     
@@ -28,17 +32,17 @@ const LoginScreen=({navigation})=>{
           name:name,
           phone:phone,
         })
-        console.log('User logged-in successfully!')
+        Alert.alert("Query",'User logged-in successfully!')
         setName('');
         setEmail('');
         setPassword('');
         setPhone('');
         console.log('User signed in Successfully!');
-        navigation.navigate('ChatScreen')
+        navigation.navigate('ChatScreen',{name})
       })
       .catch(error=>{
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          Alert.alert('Query','That email address is invalid!');
         }
     
         console.error(error);
@@ -70,7 +74,7 @@ const LoginScreen=({navigation})=>{
     showsVerticalScrollIndicator={false}>
       <ImageBackground source={{uri:"https://media.istockphoto.com/photos/nautilus-blue-background-picture-id905432958?k=20&m=905432958&s=612x612&w=0&h=1QK1uB488NueaCd-4rVSUAStyqjLTU9ppNKWCcD0e_c="}}
       style={{height:Dimensions.get('window').height/2.5}}>
-
+          <Image source={{uri:"https://png.pngtree.com/png-clipart/20210829/original/pngtree-welcome-back-poster-png-image_6681255.jpg"}} style={{width:210,height:210,marginLeft:100,marginTop:30,borderRadius:100}}/>
       </ImageBackground>
       <View style={{display:'flex',flex:1.5,backgroundColor:"white",bottom:60,borderTopStartRadius:60,borderTopEndRadius:60}}>
         <View style={{padding:30}}>
@@ -90,7 +94,7 @@ const LoginScreen=({navigation})=>{
               </View>
               
               <View style={{display:'flex',flex:1,flexDirection:'row',
-              marginTop:120,justifyContent:'center'}}>
+              marginTop:90,justifyContent:'center'}}>
                 <Text style={{color:"black",fontSize:16}}>Create a new Account.</Text>
                 <TouchableOpacity onPress={()=>navigation.navigate("RegisterScreen")}>
                 <Text style={{color:"#391ac4",marginLeft:5,fontWeight:"700",fontSize:16}}>Sign Up</Text>
