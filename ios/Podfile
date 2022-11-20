@@ -21,6 +21,8 @@ target 'Converso' do
 
   pod 'RNFBFirestore', :path => '../node_modules/@react-native-firebase/firestore'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'ConversoTests' do
     inherit! :complete
     # Pods for testing

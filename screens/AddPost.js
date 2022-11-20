@@ -1,11 +1,10 @@
 import { View, Text,Dimensions,TouchableOpacity,Platform,TextInput,PermissionsAndroid,Alert,Image,ScrollView } from 'react-native'
-import React,{useState} from 'react'
-import auth from '@react-native-firebase/auth'
+import React,{useEffect, useState} from 'react'
 import storage from '@react-native-firebase/storage'
 import firestore from '@react-native-firebase/firestore'
 import ImageCropPicker from 'react-native-image-crop-picker';
 import PostScreen from './PostScreen';
-import { useRoute } from '@react-navigation/native';
+import firebase from '@react-native-firebase/app'
 
 
 
@@ -15,9 +14,21 @@ const AddPost= ({navigation}) => {
     const [uploading, setUploading] = useState(false);
     const [transferred, setTransferred] = useState(0);
     const [post, setPost] = useState(null);
-    
-    const route=useRoute();
-    const user=route.user
+    const [name,setName]=useState();
+    const [photo,setPhoto]=useState();
+    const user=firebase.auth().currentUser;
+    useEffect(()=>{
+      
+      firebase.firestore().collection("users").doc(user.uid).get()
+      .then((snapshot)=>{
+          console.log("Details"+snapshot.data().name);
+          setName(snapshot.data().name);
+          setPhoto(snapshot.data().pic);
+      })
+      
+      
+   
+     },[])
     
 
     const takePhotoFromCamera = () => {
@@ -49,20 +60,22 @@ const AddPost= ({navigation}) => {
       const submitPost = async () => {
         const imageUrl = await uploadImage();
         console.log('Image Url: ', imageUrl);
-        console.log('Post: ', post);
+        console.log('Post: ', name);
         
 
         
           firestore().collection('Posts').add({
-          
-          Username:user.name,
+          Userid:user.uid,
+          Username:name,
           postImg: image,
           postTime:firestore.Timestamp.fromDate(new Date()),
+          userImg:photo,
+          likes:0,
           
           
         })
         .then(() => {
-            console.log('username: '+user.name);
+           
             console.log('Post Added!');
             Alert.alert(
               'Post published!',
@@ -73,7 +86,7 @@ const AddPost= ({navigation}) => {
           .catch((error) => {
             console.log('Something went wrong with added post to firestore.', error);
           })
-          navigation.navigate("PostScreen",{name:name});
+          navigation.navigate("PostScreen");
           
         }
     
@@ -146,10 +159,8 @@ const AddPost= ({navigation}) => {
         <Text style={{color:"white",padding:15,fontSize:20}}>Upload From Library</Text>
         </View>
         </TouchableOpacity> 
-        <View style={{width:300,height:250,marginTop:80,borderWidth:2,borderColor:"black"}}>
-        <Image source={{uri:image}} style={{width:296,height:246}}/>
-        </View>
-        <TouchableOpacity onPress={submitPost}>
+        {image==null?null: <Image source={{uri:image}} style={{width:296,height:246,marginTop:30}}/>}
+        <TouchableOpacity onPress={image==null?null:submitPost}>
         <View style={{backgroundColor:"chocolate",width:300,alignItems:"center",marginTop:30}}>
         <Text style={{color:"white",margin:20,fontSize:20}}>Post</Text>
         </View>

@@ -3,7 +3,7 @@ import React,{useEffect, useState} from 'react'
 import PostCard from './PostCard';
 import firestore from '@react-native-firebase/firestore';
 import AddPost from './AddPost';
-import { useRoute } from '@react-navigation/native';
+import {getAuth} from "@react-native-firebase/auth"
 
 
 
@@ -12,7 +12,8 @@ const PostScreen = ({navigation}) => {
 
   const [list,setList]=useState([]);
   const ref=firestore().collection('Posts');
-
+  
+  
   
 
 useEffect(
@@ -24,18 +25,20 @@ useEffect(
     const list=[]
     querySnapshot.forEach(doc=>{
       list.push({
-
-        name:doc.data().name,
+        userid:doc.data().Userid,
+        id:doc.id,
+        name:doc.data().Username,
         image:doc.data().postImg,
         time:doc.data().postTime,
-        
+        photo:doc.data().userImg,
+        likes:doc.data().likes,
       })
     })
     setList(list)
     console.log(list)
     
   })
-  console.log(list);
+  
 },[])
   return ( 
     <View style={{alignItems:"center"}}>
@@ -45,14 +48,14 @@ useEffect(
           renderItem={({item})=>(
             <ScrollView scrollEnabled>
              
-              <PostCard img1={item.image} name={item.name} pimg={item.pic}/>
+              <PostCard item={item} img={item.image} pimg={item.photo} navigation={navigation}/>
 
             </ScrollView>
           )}/>
       </View>
       
       <View style={{marginTop:650,width:80,backgroundColor:"green",position:"absolute",borderRadius:100,height:80,alignItems:"center",justifyContent:"center"}}>
-        <TouchableOpacity onPress={()=>navigation.navigate("AddPost")}>
+        <TouchableOpacity onPress={()=>navigation.navigate('AddPost')}>
         <Text style={{fontSize:40,color:"white"}}>+</Text>
         </TouchableOpacity>
       </View>

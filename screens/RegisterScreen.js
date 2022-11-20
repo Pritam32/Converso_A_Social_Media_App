@@ -54,12 +54,7 @@ const RegisterScreen=({navigation})=>{
         pic:pic,
       })
 
-      firestore().collection('Posts').set({
-        username:name,
-        pic:pic,
-        postTime: firestore.Timestamp.fromDate(new Date()),
-        postImage:null,
-      })
+      
 
       .then(() => {
         

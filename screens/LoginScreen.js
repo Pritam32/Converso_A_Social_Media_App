@@ -94,7 +94,7 @@ const LoginScreen=({navigation})=>{
               </View>
               
               <View style={{display:'flex',flex:1,flexDirection:'row',
-              marginTop:90,justifyContent:'center'}}>
+              marginTop:60,justifyContent:'center'}}>
                 <Text style={{color:"black",fontSize:16}}>Create a new Account.</Text>
                 <TouchableOpacity onPress={()=>navigation.navigate("RegisterScreen")}>
                 <Text style={{color:"#391ac4",marginLeft:5,fontWeight:"700",fontSize:16}}>Sign Up</Text>

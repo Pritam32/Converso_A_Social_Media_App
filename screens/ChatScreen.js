@@ -1,37 +1,50 @@
 import { View, Text,Image,SafeAreaView,TextInput} from 'react-native';
 import React, { useEffect, useState } from 'react';
-import firestore from '@react-native-firebase/firestore'; 
+import firestore, { firebase } from '@react-native-firebase/firestore'; 
 import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Chat from './Chat';
 import PostScreen from './PostScreen';
 import { useRoute } from '@react-navigation/native';
 
+
+
 const ChatScreen = ({user,navigation}) => {
 
   const [users,setUsers]=useState(null);
   const [search,setSearch]=useState();
+
+  const current=firebase.auth().currentUser;
   
-  const route=useRoute();
+  
+  const SearchUser=async()=>{
+    const snap=firestore().collection('users').where('name','==',search).get();
+    const user1=(await snap).docs.map(docSnap=>docSnap.data())
+    setUsers(user1)
+    .catch(error=>(
+      console.log(error)
+    ))
+  }
   
   
   
 
   const DisplayUsers=async()=>{
-    const querysnap=firestore().collection('users').get();
+    const querysnap=firestore().collection('users').where("uid","!=",current.uid).get();
     const allusers=(await querysnap).docs.map(docSnap=>docSnap.data())
-    setUsers(allusers)
+     setUsers(allusers)
+    
    
-    .catch(error=>{
-      console.error(error);
-      });
   }
+ 
+
   useEffect(()=>{
     DisplayUsers();
-    console.log(users);
-    console.log(user.name)
+    console.log(current.uid);
+  
     
   },[])
 
+  
   const RenderCard=({item})=>{
     return(
       <TouchableOpacity onPress={()=>navigation.navigate('Chat',{name:item.name,uid:item.uid,pic:item.pic
@@ -52,8 +65,18 @@ const ChatScreen = ({user,navigation}) => {
   return (
       
     <View style={{alignItems:"center"}}>
+      <View style={{alignItems:"center",flexDirection:"row"}}>
+      <View style={{borderWidth:2,borderColor:"black",borderRadius:20,width:290,marginTop:20,paddingLeft:20}}>
+        <TextInput style={{color:"black",fontSize:18}} placeholder="Search" placeholderTextColor="grey"
+        onChangeText={(val)=>setSearch(val)}/>
+      </View>
+      <TouchableOpacity onPress={SearchUser} >
+      <View style={{backgroundColor:"green",width:80,alignItems:"center",padding:5,marginTop:20,marginLeft:10}}>
+    <Text style={{fontSize:18,color:"white"}}>Search</Text>
+     </View>
+     </TouchableOpacity>
+      </View>  
     <View style={{marginTop:20,height:710,width:400}}>
-    
       
       <FlatList
       data={users}

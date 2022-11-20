@@ -9,13 +9,16 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import RegisterScreen from './screens/RegisterScreen';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import firestore, { firebase } from '@react-native-firebase/firestore';
 import ChatScreen from './screens/ChatScreen';
 import Chat from './screens/Chat';
 
 import PostScreen from './screens/PostScreen';
 import AddPost from './screens/AddPost';
+import CommentScreen from './screens/CommentScreen';
 
+
+console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 const Navigation = ()=>{
@@ -26,7 +29,7 @@ const Navigation = ()=>{
   
   useEffect(()=>{
     
-   const unregister =  auth().onAuthStateChanged(userExist=>{
+   const unregister=firebase.auth().onAuthStateChanged(userExist=>{
       if(userExist){
        
         firestore().collection('users')
@@ -93,11 +96,9 @@ return(
           {props => <Chat {...props} user={user} /> }
         </Stack.Screen> 
         <Stack.Screen name="PostScreen" component={PostScreen} options={{headerTitle:"Posts",headerTitleStyle:{color:"white"},headerStyle:{backgroundColor:'#041b38',height:80}}}/>
-        
-        
-
-
+        <Stack.Screen name="CommentScreen" component={CommentScreen} options={{headerTitle:"Comments",headerTitleStyle:{color:"white"},headerStyle:{backgroundColor:'#041b38',height:80}}}/>
         <Stack.Screen name="AddPost" component={AddPost} options={{headerShown:false}}/>
+        
          </>
         :
         <>
