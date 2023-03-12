@@ -23,7 +23,7 @@ const RegisterScreen=({navigation})=>{
 
   
   const AddImage=()=>{
-  
+    
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
           ImageCropPicker.openPicker({
             width: 750,

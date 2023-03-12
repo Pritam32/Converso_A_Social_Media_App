@@ -12,7 +12,7 @@ import auth from '@react-native-firebase/auth';
 import firestore, { firebase } from '@react-native-firebase/firestore';
 import ChatScreen from './screens/ChatScreen';
 import Chat from './screens/Chat';
-
+import SplashScreen from './screens/SplashScreen';
 import PostScreen from './screens/PostScreen';
 import AddPost from './screens/AddPost';
 import CommentScreen from './screens/CommentScreen';
@@ -57,15 +57,18 @@ const Navigation = ()=>{
 return(
   <SafeAreaProvider>
     <NavigationContainer>
+    
     <Stack.Navigator 
        screenOptions={{
          headerTintColor:"green"
        }}
       
       >
+      
          {user?
         <>
-          <Stack.Screen name="ChatScreen"  options={{
+        
+        <Stack.Screen name="ChatScreen"  options={{
           headerRight:()=>
           
           <TouchableOpacity  onPress={()=>{
@@ -102,6 +105,7 @@ return(
          </>
         :
         <>
+        <Stack.Screen name='SplashScreen'  component={SplashScreen} options={{headerShown:false}}/>
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{headerShown:false}}/>
         
